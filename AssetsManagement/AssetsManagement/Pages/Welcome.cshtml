@@ -1,0 +1,12 @@
+﻿@page
+@model AssetsManagement.Pages.WelcomeModel
+
+<div class="card-columns">
+    @foreach (var asset in @Model.Assets)
+    {
+        <div class="card">
+            <h2>@(asset.Name + " " + asset.Description)</h2>
+         
+        </div>
+    }
+</div>
