@@ -2,3 +2,54 @@
 @model AssetsManagement.Pages.ExchangeRatesModel
 @{
 }
+<style>
+    td{
+        border-style: none;
+    }
+
+    .submit{
+        background-color: green;
+        border-radius: 5px;
+        color: white;
+    }
+
+    table{
+        border-style:solid;
+    }
+</style>
+<h1>Exchange Rates</h1>
+
+
+@*@for(int i = 0; i< Model.ExchangeRates.Count; i++)
+{
+    <input asp-for="@Model.ExchangeRates[i].Rate"/>
+}*@
+@*<ul>
+@foreach(var rate in Model.ExchangeRates){
+    <li>@rate.Currency</li>
+}
+</ul>*@
+
+<table class="table mt-5" style="width:100%">
+    <thead>
+        <tr>
+            <th style="width:33%">Currency</th>
+            <th style="width:33%">Rate</th>
+            <th style="width:34%">Last Updated</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var el in Model.ExchangeRates)
+        {
+            <tr>
+                <td>@el.Currency</td>
+                <td><input asp-for="@el.Rate" /></td>
+                <td>@el.LastUpdated</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div style="text-align: right">
+    <button class="btn submit">Save</button>
+</div>
