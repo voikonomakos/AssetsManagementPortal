@@ -12,7 +12,7 @@ namespace AssetsManagement.Pages
 
     public class ExchangeRatesModel : PageModel
     {
-        public List<ExchangeRate> ExchangeRates { get; private set; }
+        public IList<ExchangeRate> ExchangeRates { get; private set; }
 
         public void OnGet()
         {
