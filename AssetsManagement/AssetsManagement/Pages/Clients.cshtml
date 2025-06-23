@@ -1,0 +1,27 @@
+﻿@page
+@model AssetsManagement.Pages.ClientsModel
+@{
+}
+<h1>Clients</h1>
+
+<table class="table mt-5" style="width:100%">
+    <thead>
+        <tr>
+            <th style=First Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var el in Model.Clients)
+        {
+            <tr>
+                <td>@el.Name</td>
+                <td>
+                    <a asp-page="./SelectClient" asp-route-name="@el.Name">Select</a> |
+                    <a asp-page="./EditClient" asp-route-name="@el.Name">Edit</a> |
+                    <a asp-page="./DeleteClient" asp-route-name="@el.Name">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -3,18 +3,19 @@
 @{
 }
 <style>
+    table {
+        border: 1px solid black;
+        border-collapse:collapse;
+    }
+
     td{
-        border-style: none;
+        border: none;
     }
 
     .submit{
         background-color: green;
         border-radius: 5px;
         color: white;
-    }
-
-    table{
-        border-style:solid;
     }
 </style>
 <h1>Exchange Rates</h1>
@@ -33,9 +34,10 @@
 <table class="table mt-5" style="width:100%">
     <thead>
         <tr>
-            <th style="width:33%">Currency</th>
-            <th style="width:33%">Rate</th>
-            <th style="width:34%">Last Updated</th>
+            <th style="width:30%">Currency</th>
+            <th style="width:30%">Rate</th>
+            <th style="width:30%">Last Updated</th>
+            <th style="width:10%"></th>
         </tr>
     </thead>
     <tbody>
@@ -43,8 +45,9 @@
         {
             <tr>
                 <td>@el.Currency</td>
-                <td><input asp-for="@el.Rate" /></td>
+                <td>@el.Value</td>
                 <td>@el.LastUpdated</td>
+                <td><a asp-page="./EditRate" asp-route-currency="@el.Currency">Edit</a></td>
             </tr>
         }
     </tbody>
