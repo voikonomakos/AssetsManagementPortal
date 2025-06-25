@@ -4,8 +4,8 @@ namespace AssetsManagement
 {
     public class Db
     {
-        public List<ExchangeRate> Rates { get; set; }
-        public List<Client> Clients { get; set; }
+        public required List<ExchangeRate> Rates { get; set; }
+        public required List<Client> Clients { get; set; }
 
         public Db()
         {

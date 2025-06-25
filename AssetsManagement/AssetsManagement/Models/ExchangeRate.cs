@@ -3,9 +3,9 @@
     public class Client
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; }= string.Empty;
 
-        public List<Asset> Assets { get; set; }
+        public List<Asset> Assets { get; set; } = new List<Asset>();
     }
 
     public class Asset
@@ -17,7 +17,11 @@
         public string AssetCategory { get; set; }
 
         public Asset()
-        {            
+        {        
+            Name = string.Empty;
+            Value = 0.0m;
+            AssetDate = DateTime.Now;
+            AssetCategory = string.Empty;    
         }
 
         public Asset(string name, decimal value, DateTime assetDate, string assetCategory)
