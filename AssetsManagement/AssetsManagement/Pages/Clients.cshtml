@@ -1,6 +1,7 @@
-﻿@page
+﻿@page "{id:int?}"
 @model AssetsManagement.Pages.ClientsModel
 @{
+    ViewData["Title"] = "Clients";
 }
 <h1>Clients</h1>
 
@@ -17,11 +18,45 @@
             <tr>
                 <td>@el.Name</td>
                 <td>
-                    <a asp-page="./SelectClient" asp-route-name="@el.Name">Select</a> |
-                    <a asp-page="./EditClient" asp-route-name="@el.Name">Edit</a> |
-                    <a asp-page="./DeleteClient" asp-route-name="@el.Name">Delete</a>
+                    <a asp-page="./Clients" asp-route-name="@el.Id">Select</a> |
+                    <a asp-page="./EditClient" asp-route-name="@el.Id">Edit</a> |
+                    <a asp-page="./DeleteClient" asp-route-name="@el.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+        @if (Model.Assets!=null )
+        {
+            <h3>Assets per Client</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Last Updated</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var asset in Model.Assets)
+                    {   
+                        <tr>
+                            <td>
+                                @asset.name
+                            </td>
+                            <td>
+                                @asset.value
+                            </td>
+                            <td>
+                                @asset.assetDate
+                            </td>
+                            <td>
+                                @asset.assetCategory
+                            </td>
+                        </tr>
+                    }
+                 </tbody>
+            </table>
+}
