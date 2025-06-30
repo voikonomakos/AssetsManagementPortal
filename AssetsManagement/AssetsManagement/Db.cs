@@ -7,6 +7,9 @@ namespace AssetsManagement
         public required List<ExchangeRate> Rates { get; set; }
         public required List<Client> Clients { get; set; }
 
+        public required List<Currency> Currencies { get; set; }
+
+        public required List<AccountManager> AccountManagers { get; set; }
         public Db()
         {
             Init();
@@ -31,7 +34,13 @@ namespace AssetsManagement
                 }
             };
                 
-            Clients.Add(clientA);            
+            Clients.Add(clientA);
+
+            Currencies = new List<Currency>();
+            Currencies.Add(new Currency { ClientCurrency = "EUR" } );
+
+            AccountManagers = new List<AccountManager>();
+            AccountManagers.Add(new AccountManager { Name = "George", Surname = "Tosounidou" });
         }
 
         public void UpdateRate(string currency, decimal value)
@@ -46,6 +55,8 @@ namespace AssetsManagement
             }
         }
 
+
+        // add method id => max items in Clients List + 1
         public ExchangeRate GetRate(string currency)
         {
             return Rates.Where (x => x.Currency == currency).First();           

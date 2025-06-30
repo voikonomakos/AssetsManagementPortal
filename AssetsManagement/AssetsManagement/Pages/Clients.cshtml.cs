@@ -8,31 +8,44 @@ namespace AssetsManagement.Pages
 {
     public class ClientsModel : PageModel
     {
-        public required List<Client> Clients { get; set; }
-       public List<Models.Asset>? Assets { get; set; }
+       
 
         public int? SelectedClientId { get; set; }
+        public PaginatedList<Client>? Clients { get; set; }
+        public List<Models.Asset>? Assets { get; set; }
+        public string? CurrentFilter { get; set; }
+        public string? CurrentSort { get; set; }
+        public string? NameSort { get; set; }
+        public string? DateSort { get; set; }
         private Db db;
 
-        public ClientsModel(Db db)
+              public ClientsModel(Db db)
         {
             this.db = db;
         }
 
-        public void OnGet(int? id)
+    public void OnGet(int? id, string? searchString)
+    {
+        CurrentFilter = searchString;
+
+        var clientsList = db.Clients.AsQueryable();
+
+        if (!string.IsNullOrEmpty(searchString))
         {
-            Clients = db.Clients;
-            if (id != null)
+            clientsList = clientsList.Where(c => c.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+        }
+
+        Clients = new PaginatedList<Client>(clientsList.ToList(), clientsList.Count(), 1, clientsList.Count());
+
+        if (id != null)
+        {
+            var selectedClient = clientsList.FirstOrDefault(c => c.Id == id);
+            if (selectedClient != null)
             {
-                var selectedClient = Clients.FirstOrDefault(c => c.Id == id);
-                if (selectedClient != null)
-                {
-
-                    SelectedClientId = selectedClient.Id;
-                    Assets = selectedClient.Assets;
-                }
-
+                SelectedClientId = selectedClient.Id;
+                Assets = selectedClient.Assets;
             }
         }
+    }
     }
 }

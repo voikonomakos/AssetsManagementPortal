@@ -6,11 +6,29 @@
     ViewData["Title"] = "Clients";
 }
 <h1>Clients</h1>
+<br />
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form asp-page="./Clients" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Clients">Back to full List</a>
+        </p>
+    </div>
+</form>
 
 <table class="table mt-5" style="width:100%">
     <thead>
         <tr>
             <th>First Name</th>
+            <th>Currency</th>
+            <th>Account Manager</th>
             <th></th>
         </tr>
     </thead>
@@ -21,6 +39,8 @@
             {
                 <tr>
                     <td>@el.Name</td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <a asp-page="./Clients" asp-route-id="@el.Id">Select</a> |
                         <a asp-page="./EditClient" asp-route-id="@el.Id">Edit</a> |
