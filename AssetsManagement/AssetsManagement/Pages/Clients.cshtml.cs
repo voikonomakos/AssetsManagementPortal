@@ -13,6 +13,8 @@ namespace AssetsManagement.Pages
         public int? SelectedClientId { get; set; }
         public PaginatedList<Client>? Clients { get; set; }
         public List<Models.Asset>? Assets { get; set; }
+        public List<Models.Currency>? Currencies { get; set; }
+        public List<AccountManager>? AccountManagers { get; set; }
         public string? CurrentFilter { get; set; }
         public string? CurrentSort { get; set; }
         public string? NameSort { get; set; }
@@ -24,28 +26,27 @@ namespace AssetsManagement.Pages
             this.db = db;
         }
 
-    public void OnGet(int? id, string? searchString)
-    {
-        CurrentFilter = searchString;
-
-        var clientsList = db.Clients.AsQueryable();
-
-        if (!string.IsNullOrEmpty(searchString))
+        public void OnGet(int? id, string? searchString)
         {
-            clientsList = clientsList.Where(c => c.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
-        }
-
-        Clients = new PaginatedList<Client>(clientsList.ToList(), clientsList.Count(), 1, clientsList.Count());
-
-        if (id != null)
-        {
-            var selectedClient = clientsList.FirstOrDefault(c => c.Id == id);
-            if (selectedClient != null)
+            CurrentFilter = searchString;
+            var clientsList = db.Clients.AsQueryable();
+            if (!string.IsNullOrEmpty(searchString))
             {
-                SelectedClientId = selectedClient.Id;
-                Assets = selectedClient.Assets;
+                clientsList = clientsList.Where(c => c.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+            }
+            Clients = new PaginatedList<Client>(clientsList.ToList(), clientsList.Count(), 1, clientsList.Count());
+            Currencies = db.Currencies;
+            AccountManagers = db.AccountManagers;
+
+            if (id != null)
+            {
+                var selectedClient = clientsList.FirstOrDefault(c => c.Id == id);
+                if (selectedClient != null)
+                {
+                    SelectedClientId = selectedClient.Id;
+                    Assets = selectedClient.Assets;
+                }
             }
         }
-    }
     }
 }
