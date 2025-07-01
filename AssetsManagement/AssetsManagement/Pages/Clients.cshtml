@@ -9,7 +9,7 @@
 <br />
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="./CreateClient">Create New</a>
 </p>
 
 <form asp-page="./Clients" method="get">
@@ -26,7 +26,7 @@
 <table class="table mt-5" style="width:100%">
     <thead>
         <tr>
-            <th>First Name</th>
+            <th>Name</th>
             <th>Currency</th>
             <th>Account Manager</th>
             <th></th>
@@ -38,9 +38,16 @@
             foreach (var el in Model.Clients)
             {
                 <tr>
-                    <td>@el.Name</td>
-                    <td></td>
-                    <td></td>
+                    <td>@($"{el.Name} {el.LastName}")</td>
+                    <td>
+                       @(string.Join(", ", Model.Currencies?
+                       .Where(c => el.CurrenciesId.Contains(c.Id))
+                       .Select(c => c.Name) ?? new List<string>()))
+                    </td>
+                    <td>
+                        @{var manager = Model.AccountManagers?.FirstOrDefault(am => am.Id == el.AccountManagerId);}
+                        @(manager != null ? manager.Name + " " + manager.Surname : "")
+                    </td>
                     <td>
                         <a asp-page="./Clients" asp-route-id="@el.Id">Select</a> |
                         <a asp-page="./EditClient" asp-route-id="@el.Id">Edit</a> |

@@ -27,20 +27,31 @@ namespace AssetsManagement
             {
                 Id = 1,
                 Name = "George",
+                LastName = "Tosounidou",
                 Assets = new List<Asset>
                 {
                     new Asset("BTC", 2, DateTime.Now, "CRYPTOS"),
                     new Asset("ETH", 2, DateTime.Now, "CRYPTOS")
-                }
-            };
+                },
+                CurrenciesId = new List<int> { 1, 2, 3 },
+                AccountManagerId = 1
+            
+             };
                 
             Clients.Add(clientA);
 
-            Currencies = new List<Currency>();
-            Currencies.Add(new Currency { ClientCurrency = "EUR" } );
+            Currencies = new List<Currency>
+            {
+                new Currency { Id = 1, Name = "USD" },
+                new Currency { Id = 2, Name = "EUR" },
+                new Currency { Id = 3, Name = "GBP" }
+            };
 
-            AccountManagers = new List<AccountManager>();
-            AccountManagers.Add(new AccountManager { Name = "George", Surname = "Tosounidou" });
+            AccountManagers = new List<AccountManager>
+            {
+                new AccountManager { Id = 1, Name = "John", Surname = "Doe" },
+                new AccountManager { Id = 2, Name = "Jane", Surname = "Smith" }
+            };
         }
 
         public void UpdateRate(string currency, decimal value)
