@@ -84,3 +84,23 @@
         </tbody>
     </table>
 }
+
+@{
+    var prevDisabled = !(Model.Clients?.HasPreviousPage ?? false) ? "disabled" : "";
+    var nextDisabled = !(Model.Clients?.HasNextPage ?? false) ? "disabled" : "";
+    }
+
+    <a asp-page="./Clients"
+    asp-route-sortOrder="@Model.CurrentSort"
+    asp-route-pageIndex="@(Model.Clients?.PageIndex - 1)"
+    asp-route-currentFilter="@Model.CurrentFilter"
+    class="btn btn-primary @prevDisabled">
+        Previous
+    </a>
+    <a asp-page="./Clients"
+    asp-route-sortOrder="@Model.CurrentSort"
+    asp-route-pageIndex="@(Model.Clients?.PageIndex + 1)"
+    asp-route-currentFilter="@Model.CurrentFilter"
+    class="btn btn-primary @nextDisabled">
+        Next
+    </a>
