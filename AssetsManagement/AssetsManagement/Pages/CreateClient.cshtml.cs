@@ -1,16 +1,21 @@
 using AssetsManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AssetsManagement.Pages
 {
     public class CreateClientModel : PageModel
     {
         private readonly Db db;
+        private readonly ILogger<CreateClientModel> _logger;
 
-        public CreateClientModel(Db db)
+        public CreateClientModel(Db db, ILogger<CreateClientModel> logger)
         {
             this.db = db;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -27,15 +32,15 @@ namespace AssetsManagement.Pages
 
         public IActionResult OnPost()
         {
+            Currencies = db.Currencies;
+            AccountManagers = db.AccountManagers;
+
             if (!ModelState.IsValid)
             {
-                Currencies = db.Currencies;
-                AccountManagers = db.AccountManagers;
                 return Page();
             }
 
             db.Clients.Add(Client);
-            // Save changes to your database here if needed
 
             return RedirectToPage("Clients");
         }
