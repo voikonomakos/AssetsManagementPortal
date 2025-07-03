@@ -1,55 +1,69 @@
-﻿@page "{id:int?}"
-@using AssetsManagement.Models
+﻿@page
 @model AssetsManagement.Pages.CreateClientModel
 @{
     ViewData["Title"] = "Create Client";
 }
-<h2>Create</h2>
-<h4>Client</h4>
+
+<h2>Create New Client</h2>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Client.Name" class="control-label"></label>
+            <div class="form-group mb-4">
+                <label asp-for="Client.Name" class="control-label mb-2"></label>
                 <input asp-for="Client.Name" class="form-control" />
                 <span asp-validation-for="Client.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Client.LastName" class="control-label"></label>
+            <div class="form-group mb-4">
+                <label asp-for="Client.LastName" class="control-label mb-2"></label>
                 <input asp-for="Client.LastName" class="form-control" />
                 <span asp-validation-for="Client.LastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Client.CurrenciesId" class="control-label"></label>
-                <select asp-for="Client.CurrenciesId"
-                        asp-items="@(new SelectList(Model.Currencies, "Id", "Name"))"
-                        class="form-control"
-                        multiple>
-                </select>
+            <div class="form-group mb-4">
+                <label class="control-label mb-2">Currencies</label>
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            foreach (var currency in Model.Currencies)
+                            {
+                                if (cnt > 0 && cnt % 5 == 0)
+                                {
+                                    @:</tr><tr>
+                                }
+                                @:<td style="padding-right:18px; padding-bottom:10px; white-space:nowrap;">
+                                    <input type="checkbox"
+                                           name="Client.CurrenciesId"
+                                           value="@currency.Id"
+                                           @(Model.Client.CurrenciesId != null && Model.Client.CurrenciesId.Contains(currency.Id) ? "checked=\"checked\"" : "") />
+                                    @currency.Name
+                                @:</td>
+                                cnt++;
+                            }
+                        }
+                    </tr>
+                </table>
                 <span asp-validation-for="Client.CurrenciesId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Client.AccountManagerId" class="control-label"></label>
+            <div class="form-group mb-4">
+                <label asp-for="Client.AccountManagerId" class="control-label mb-2"></label>
                 <select asp-for="Client.AccountManagerId"
-                        asp-items="@(new SelectList(Model.AccountManagers, "Id", "Name"))"
+                        asp-items="@(new SelectList(
+                            Model.AccountManagers.Select(am => new { am.Id, FullName = am.Name + " " + am.Surname }),
+                            "Id", "FullName"))"
                         class="form-control">
                     <option value="">-- Select Account Manager --</option>
                 </select>
                 <span asp-validation-for="Client.AccountManagerId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group mb-4">
+                <input type="submit" value="Create" class="btn btn-primary" /> | 
+                <a asp-page="Clients">Back to List</a>
             </div>
         </form>
     </div>
 </div>
-<div>
-    <a asp-page="Clients">Back to List</a>
-</div>
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
