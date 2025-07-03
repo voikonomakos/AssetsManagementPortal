@@ -15,22 +15,22 @@
     @if (Model.Client != null)
     {
         <dl class="row">
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Client!.Name)
+            <dt class="col-sm-3 mb-4">
+              First Name
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-9 mb-4">
                 @Html.DisplayFor(model => model.Client!.Name)
             </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Client!.LastName)
+            <dt class="col-sm-3 mb-4">
+                LastName
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-9 mb-4">
                 @Html.DisplayFor(model => model.Client!.LastName)
             </dd>
-            <dt class="col-sm-3">
+            <dt class="col-sm-3 mb-4">
                 Currencies
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-9 mb-4">
                 @if (Model.Client!.CurrenciesId != null && Model.Currencies != null)
                 {
                     var selected = Model.Currencies
@@ -39,10 +39,10 @@
                     @string.Join(", ", selected)
                 }
             </dd>
-            <dt class="col-sm-3">
+            <dt class="col-sm-3 mb-4">
                 Account Manager
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-9 mb-4">
                @{
                     var manager = Model.AccountManagers.FirstOrDefault(am => am.Id == Model.Client.AccountManagerId);
                 }

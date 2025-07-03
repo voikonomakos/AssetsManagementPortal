@@ -1,0 +1,67 @@
+﻿@page
+@model AssetsManagement.Pages.ClientDetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Client's Details</h1>
+
+@if (Model.Client != null)
+{
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3 mb-4">
+                First Name
+            </dt>
+            <dd class="col-sm-9 mb-4">
+                @Html.DisplayFor(model => model.Client!.Name)
+            </dd>
+            <dt class="col-sm-3 mb-4">
+                Last Name
+            </dt>
+            <dd class="col-sm-9 mb-4">
+                @Html.DisplayFor(model => model.Client!.LastName)
+            </dd>
+            <dt class="col-sm-3 mb-4">
+                Currencies
+            </dt>
+            <dd class="col-sm-9 mb-4">
+                @{
+                    if (Model.Client.CurrenciesId != null && Model.Currencies != null)
+                    {
+                        var selected = Model.Currencies
+                            .Where(c => Model.Client.CurrenciesId.Contains(c.Id))
+                            .Select(c => c.Name);
+                        @string.Join(", ", selected)
+                    }
+                }
+            </dd>
+            <dt class="col-sm-3 mb-4">
+                Account Manager
+            </dt>
+            <dd class="col-sm-9 mb-4">
+                @{
+                    var manager = Model.AccountManagers?.FirstOrDefault(am => am.Id == Model.Client.AccountManagerId);
+                }
+                @if (manager != null)
+                {
+                    @($"{manager.Name} {manager.Surname}")
+                }
+                else
+                {
+                    <span>No account manager assigned.</span>
+                }
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-page="EditClient" asp-route-id="@Model.Client.Id">Edit</a> |
+        <a asp-page="Clients">Back to List</a>
+    </div>
+}
+else
+{
+    <div class="text-danger">Client not found.</div>
+}
