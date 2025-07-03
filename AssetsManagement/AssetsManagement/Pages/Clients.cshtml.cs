@@ -21,12 +21,12 @@ namespace AssetsManagement.Pages
         public string? DateSort { get; set; }
         private Db db;
 
-              public ClientsModel(Db db)
+        public ClientsModel(Db db)
         {
             this.db = db;
         }
 
-        public void OnGet(int? id, string? searchString)
+        public void OnGet(int? id, string? searchString, int pageIndex = 1)
         {
             CurrentFilter = searchString;
             var clientsList = db.Clients.AsQueryable();
@@ -34,7 +34,8 @@ namespace AssetsManagement.Pages
             {
                 clientsList = clientsList.Where(c => c.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
-            Clients = new PaginatedList<Client>(clientsList.ToList(), clientsList.Count(), 1, clientsList.Count());
+            int pageSize = 5;
+            Clients = new PaginatedList<Client>(clientsList.ToList(), clientsList.Count(), pageIndex, pageSize);
             Currencies = db.Currencies;
             AccountManagers = db.AccountManagers;
 
