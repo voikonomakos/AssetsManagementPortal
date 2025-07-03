@@ -1,0 +1,79 @@
+﻿@page
+@model AssetsManagement.Pages.Clients.EditClientModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Client</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        @if (Model.Client != null)
+        {
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Client.Id" />
+                <div class="form-group mb-4">
+                    <label asp-for="Client.Name" class="control-label mb-2">First Name</label>
+                    <input asp-for="Client.Name" class="form-control" />
+                    <span asp-validation-for="Client.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="Client.LastName" class="control-label mb-2">Last Name</label>
+                    <input asp-for="Client.LastName" class="form-control" />
+                    <span asp-validation-for="Client.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="control-label mb-2">Currencies</label>
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                foreach (var currency in Model.Currencies)
+                                {
+                                    if (cnt > 0 && cnt % 5 == 0)
+                                    {
+                                        @:</tr><tr>
+                                    }
+                                    @:<td style="padding-right:18px; padding-bottom:10px; white-space:nowrap;">
+                                        <input type="checkbox"
+                                            name="Client.CurrenciesId"
+                                            value="@currency.Id"
+                                            @(Model.Client.CurrenciesId != null && Model.Client.CurrenciesId.Contains(currency.Id) ? "checked=\"checked\"" : "") />
+                                        @currency.Name
+                                    @:</td>
+                                    cnt++;
+                                }
+                            }
+                        </tr>
+                    </table>
+                    <span asp-validation-for="Client.CurrenciesId" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="Client.AccountManagerId" class="control-label mb-2">Account Manager</label>
+                    <select asp-for="Client.AccountManagerId"
+                            asp-items="@(new SelectList(
+                                Model.AccountManagers.Select(am => new { am.Id, FullName = am.Name + " " + am.Surname }),
+                                "Id", "FullName"))"
+                            class="form-select">
+                        <option value="">-- Select Account Manager --</option>
+                    </select>
+                    <span asp-validation-for="Client.AccountManagerId" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <input type="submit" value="Save" class="btn btn-primary" /> | 
+                <a asp-page="Clients">Back to List</a>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="text-danger">Client not found.</div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
