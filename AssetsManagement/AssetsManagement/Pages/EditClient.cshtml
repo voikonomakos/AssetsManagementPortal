@@ -56,7 +56,7 @@
                             asp-items="@(new SelectList(
                                 Model.AccountManagers.Select(am => new { am.Id, FullName = am.Name + " " + am.Surname }),
                                 "Id", "FullName"))"
-                            class="form-control">
+                            class="form-select">
                         <option value="">-- Select Account Manager --</option>
                     </select>
                     <span asp-validation-for="Client.AccountManagerId" class="text-danger"></span>
