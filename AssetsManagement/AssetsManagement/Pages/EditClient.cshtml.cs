@@ -60,7 +60,6 @@ namespace AssetsManagement.Pages
                 "Client",
                 c => c.Name, c => c.LastName, c => c.CurrenciesId, c => c.AccountManagerId))
             {
-                // No SaveChanges needed for in-memory list
                 return RedirectToPage("Clients");
             }
 
