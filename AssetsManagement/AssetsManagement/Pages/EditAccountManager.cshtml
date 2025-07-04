@@ -1,0 +1,43 @@
+﻿@page
+@model AssetsManagement.Pages.EditAccountManagerModel
+@{
+    ViewData["Title"] = "Edit Account Manager";
+}
+
+<h1>Edit Account Manager</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        @if (Model.AccountManager != null)
+        {
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AccountManager.Id" />
+
+                <div class="form-group mb-4">
+                    <label asp-for="AccountManager.Name" class="control-label mb-2 fw-bold">First Name</label>
+                    <input asp-for="AccountManager.Name" class="form-control" />
+                    <span asp-validation-for="AccountManager.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="AccountManager.Surname" class="control-label mb-2 fw-bold">Last Name</label>
+                    <input asp-for="AccountManager.Surname" class="form-control" />
+                    <span asp-validation-for="AccountManager.Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <input type="submit" value="Save" class="btn btn-primary" /> |
+                    <a asp-page="AccountManagers">Back to List</a>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="text-danger">Account Manager not found</div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
