@@ -40,6 +40,9 @@ namespace AssetsManagement.Pages.Clients
                 return Page();
             }
 
+            int nextId = db.Clients.Any() ? db.Clients.Max(c => c.Id) + 1 : 1;
+            Client.Id = nextId;
+            
             db.Clients.Add(Client);
 
             return RedirectToPage("Clients");
