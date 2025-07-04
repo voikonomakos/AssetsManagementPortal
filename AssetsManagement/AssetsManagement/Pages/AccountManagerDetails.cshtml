@@ -1,0 +1,32 @@
+﻿@page
+@model AssetsManagement.Pages.AccountManagerDetailsModel
+@{
+    ViewData["Title"] = "Account Manager Details";
+}
+
+<h1>Account Manager's Details</h1>
+<br />
+
+@if (Model.AccountManager != null)
+{
+    <div class="row">
+        <div class="col-md-6"> 
+            <dl class="row">
+                <dt class="col-sm-3">First Name</dt>
+                <dd class="col-sm-9">@Model.AccountManager.Name</dd>
+
+                <dt class="col-sm-3">Last Name</dt>
+                <dd class="col-sm-9">@Model.AccountManager.Surname</dd>
+            </dl>
+        </div>
+    </div>
+    <div>
+        <a asp-page="EditAccountManager" asp-route-id="@Model.AccountManager.Id">Edit</a> |
+        <a asp-page="AccountManagers">Back to List</a>
+    </div>
+}
+else
+{
+    <div class="text-danger">Account Manager not found</div>   
+}
+
