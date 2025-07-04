@@ -55,9 +55,7 @@ namespace AssetsManagement.Pages.Clients
                 return NotFound();
             }
 
-            if (await TryUpdateModelAsync(
-                clientToUpdate,
-                "Client",
+            if (await TryUpdateModelAsync(clientToUpdate,"Client",
                 c => c.Name, c => c.LastName, c => c.CurrenciesId, c => c.AccountManagerId))
             {
                 return RedirectToPage("Clients");
