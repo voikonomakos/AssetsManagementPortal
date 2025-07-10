@@ -2,3 +2,47 @@
 @model AssetsManagement.Pages.ExchangeRatesModel
 @{
 }
+<style>
+    table {
+        border: 1px solid black;
+        border-collapse:collapse;
+    }
+
+    td{
+        border: none;
+    }
+</style>
+<h1>Exchange Rates</h1>
+
+
+@*@for(int i = 0; i< Model.ExchangeRates.Count; i++)
+{
+    <input asp-for="@Model.ExchangeRates[i].Rate"/>
+}*@
+@*<ul>
+@foreach(var rate in Model.ExchangeRates){
+    <li>@rate.Currency</li>
+}
+</ul>*@
+
+<table class="table mt-5" style="width:100%">
+    <thead>
+        <tr>
+            <th style="width:30%">Currency</th>
+            <th style="width:30%">Rate</th>
+            <th style="width:30%">Last Updated</th>
+            <th style="width:10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var el in Model.ExchangeRates)
+        {
+            <tr>
+                <td>@el.Currency</td>
+                <td>@el.Value</td>
+                <td>@el.LastUpdated</td>
+                <td><a asp-page="./EditRate" asp-route-currency="@el.Currency">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

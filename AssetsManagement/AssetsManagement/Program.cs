@@ -13,6 +13,7 @@ namespace AssetsManagement
             builder.Services.AddSingleton<UsersRepository>();
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddSingleton<Db>();
 
             var app = builder.Build();
 

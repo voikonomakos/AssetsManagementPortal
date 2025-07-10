@@ -1,0 +1,144 @@
+﻿@page "{id:int?}"
+@using AssetsManagement.Models
+@model AssetsManagement.Pages.AccountManagersModel
+
+@{
+    ViewData["Title"] = "Account Managers";
+}
+
+<h1>Account Managers</h1>
+<hr />
+
+<p>
+    <a asp-page="./CreateAccountManager">Create New Account Manager</a>
+</p>
+
+<form asp-page="./AccountManagers" method="="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./AccountManagers">Back to full List</a>
+        </p>
+    </div>
+</form>
+
+@{
+    int? selectedAccountManager = null;
+    if (RouteData.Values["id"] != null)
+    {
+        selectedAccountManager = Convert.ToInt32(RouteData.Values["id"]);
+    }
+}
+
+<table class="table mt-5" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.AccountManagers != null)
+        {
+            foreach (var am in Model.AccountManagers)
+            {
+                string selectedRow = am.Id == selectedAccountManager ? "" : "";
+                <tr class="@selectedRow">
+                    <td>@am.Name</td>
+                    <td>@am.Surname</td>
+                    <td>
+                        <a asp-page="./AccountManagers" asp-route-id="@am.Id">Select</a> |
+                        <a asp-page="./AccountManagerDetails" asp-route-id="@am.Id">Details</a> |
+                        <a asp-page="./EditAccountManager" asp-route-id="@am.Id">Edit</a> |
+                        <a asp-page="./DeleteAccountManager" asp-route-id="@am.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<br />
+
+@if (selectedAccountManager != null && Model.Clients != null && Model.Clients.Any())
+{
+    <h3>Clients</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Currencies</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in Model.Clients)
+            {
+                <tr>
+                    <td>@($"{client.Name} {client.LastName}")</td>
+                    <td>@(string.Join(", ", Model.Currencies?
+                        .Where(c => client.CurrenciesId.Contains(c.Id))
+                        .Select(c => c.Name) ?? new List<string>()))
+                    </td>
+                    <td>
+                        <a asp-page="./AccountManagers" asp-route-id="@selectedAccountManager" asp-route-clientId="@client.Id">Select</a> |                        
+                        <a asp-page="./Clients/ClientDetails" asp-route-id="@selectedAccountManager" asp-route-clientId="@client.Id">Details</a> |
+                        <a asp-page="./Clients/EditClient" asp-route-id="@selectedAccountManager" asp-route-clientId="@client.Id">Edit</a> |
+                        <a asp-page="./Clients/DeleteClient" asp-route-id="@selectedAccountManager" asp-route-clientId="@client.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+
+@if (Model.Assets != null && Model.Assets.Any())
+{
+    <h4>Assets per Client</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Last Updated</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in Model.Assets)
+            {
+                <tr>
+                    <td>@asset.Name</td>
+                    <td>@asset.Value</td>
+                    <td>@asset.AssetDate</td>
+                    <td>@asset.AssetCategory</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@{
+    var prevDisabled = !(Model.AccountManagers?.HasPreviousPage ?? false) ? "disabled" : "";
+    var nextDisabled = !(Model.AccountManagers?.HasNextPage ?? false) ? "disabled" : "";
+    }
+
+    <a asp-page="./AccountManagers"
+    asp-route-sortOrder="@Model.CurrentSort"
+    asp-route-pageIndex="@(Model.AccountManagers?.PageIndex - 1)"
+    asp-route-currentFilter="@Model.CurrentFilter"
+    class="btn btn-primary @prevDisabled">
+        Previous
+    </a>
+    <a asp-page="./AccountManagers"
+    asp-route-sortOrder="@Model.CurrentSort"
+    asp-route-pageIndex="@(Model.AccountManagers?.PageIndex + 1)"
+    asp-route-currentFilter="@Model.CurrentFilter"
+    class="btn btn-primary @nextDisabled">
+        Next
+    </a>
+
+

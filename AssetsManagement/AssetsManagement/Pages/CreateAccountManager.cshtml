@@ -1,0 +1,36 @@
+﻿@page
+@model AssetsManagement.Pages.CreateAccountManagerModel
+@{
+    ViewData["Title"] = "Create Account Manager";
+}
+
+<h1>Create Account Manager</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div class="form-group mb-4">
+                <label asp-for="AccountManager.Name" class="control-label mb-2 fw-bold">First Name</label>
+                <input asp-for="AccountManager.Name" class="form-control" />
+                <span asp-validation-for="AccountManager.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="AccountManager.Surname" class="control-label mb-2 fw-bold">Last Name</label>
+                <input asp-for="AccountManager.Surname" class="form-control" />
+                <span asp-validation-for="AccountManager.Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-4">
+                <input type="submit" value="Create Account Manager" class="btn btn-primary" /> |
+                <a asp-page="AccountManagers">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+                
+            
