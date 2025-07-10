@@ -1,3 +1,6 @@
+using AssetsManagement.Configuration;
+using AssetsManagement.Infrastructure.Repositories;
+
 namespace AssetsManagement
 {
     public class Program
@@ -5,7 +8,9 @@ namespace AssetsManagement
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.Configure<DatabaseConfiguration>(builder.Configuration.GetSection("ConnectionStrings"));
 
+            builder.Services.AddSingleton<UsersRepository>();
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddSingleton<Db>();

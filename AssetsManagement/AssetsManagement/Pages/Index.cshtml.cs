@@ -1,3 +1,4 @@
+using AssetsManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -7,7 +8,7 @@ namespace AssetsManagement.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, UsersRepository repository)
         {
             _logger = logger;
         }
