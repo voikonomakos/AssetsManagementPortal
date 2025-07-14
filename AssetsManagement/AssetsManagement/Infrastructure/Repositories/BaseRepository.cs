@@ -1,4 +1,5 @@
 ﻿using AssetsManagement.Configuration;
+using AssetsManagement.Infrastructure.Data;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Npgsql;
@@ -8,9 +9,9 @@ namespace AssetsManagement.Infrastructure.Repositories
 {
     public abstract class BaseRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly AppDbContext _dbContext;
 
-        public BaseRepository(DbContext dbContext)
+        public BaseRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
