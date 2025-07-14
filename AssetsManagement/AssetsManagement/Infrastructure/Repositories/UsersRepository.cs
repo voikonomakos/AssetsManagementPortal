@@ -6,7 +6,7 @@ namespace AssetsManagement.Infrastructure.Repositories
 {
     public class UsersRepository : BaseRepository
     {
-        public UsersRepository(IOptions<DatabaseConfiguration> configuration) : base(configuration)
+        public UsersRepository(DbContext dbContext) : base(dbContext)
         {
         }
 

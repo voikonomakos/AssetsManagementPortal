@@ -15,6 +15,10 @@ namespace AssetsManagement
             builder.Services.AddRazorPages();
             builder.Services.AddSingleton<Db>();
 
+            builder.Services.Configure<DatabaseConfiguration>(builder.Configuration.GetSection("ConnectionStrings"));
+            // Register DbContext as singleton
+            builder.Services.AddSingleton<DbContext>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
