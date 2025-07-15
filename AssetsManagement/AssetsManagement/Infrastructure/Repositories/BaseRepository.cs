@@ -73,7 +73,7 @@ namespace AssetsManagement.Infrastructure.Repositories
         {
             try
             {
-                using IDbConnection connection = _dbContext.CreateConnection();
+                using IDbConnection connection = _dbContext.CreateNewConnection();
                 connection.Open();
                 var result = await getData(connection);
                 connection.Close();
@@ -93,7 +93,7 @@ namespace AssetsManagement.Infrastructure.Repositories
         {
             try
             {
-                using IDbConnection connection = _dbContext.CreateConnection();
+                using IDbConnection connection = _dbContext.CreateNewConnection();
                 connection.Open();
                 await action(connection);
                 connection.Close();

@@ -28,21 +28,32 @@ namespace AssetsManagement.Infrastructure.Data
         }
 
         /// <summary>
-        /// Gets the current database connection used by Entity Framework Core.
+        /// Gets the current database connection for this DBContext, used by Entity Framework Core.
+        /// If the connection is not open, it will be opened automatically.
         /// </summary>
+        /// <remarks>
+        /// This connection should not be disposed because it was created by Entity Framework.
+        /// The application is responsible for disposing this connection.
+        /// </remarks>
         /// <returns>
         /// An <see cref="IDbConnection"/> representing the current database connection.
         /// </returns>
-        public IDbConnection GetDbConnection()
+        public IDbConnection GetAndOpenDbConnection()
         {
-            return Database.GetDbConnection();
+            var conn=  Database.GetDbConnection();
+            if (conn.State == ConnectionState.Closed)
+                conn.Open();
+            return conn;
         }
 
+
         /// <summary>
-        /// 
+        /// Create new connection to the database using the connection string.
+        /// Create a new connection only when you need to execute a command or query outside the context of the DbContext,
+        /// otherwiese use the dbContext's connection.
         /// </summary>
         /// <returns></returns>
-        public IDbConnection CreateConnection()
+        public IDbConnection CreateNewConnection()
         {
             
             return new SqlConnection(_connectionString);
