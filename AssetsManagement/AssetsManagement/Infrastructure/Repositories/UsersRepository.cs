@@ -1,12 +1,13 @@
 ﻿using AssetsManagement.Configuration;
 using AssetsManagement.Domain.Entities;
+using AssetsManagement.Infrastructure.Data;
 using Microsoft.Extensions.Options;
 
 namespace AssetsManagement.Infrastructure.Repositories
 {
     public class UsersRepository : BaseRepository
     {
-        public UsersRepository(IOptions<DatabaseConfiguration> configuration) : base(configuration)
+        public UsersRepository(AppDbContext dbContext) : base(dbContext)
         {
         }
 
