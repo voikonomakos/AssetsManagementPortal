@@ -1,4 +1,4 @@
-﻿using AssetsManagement.Configuration;
+using AssetsManagement.Configuration;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Npgsql;
