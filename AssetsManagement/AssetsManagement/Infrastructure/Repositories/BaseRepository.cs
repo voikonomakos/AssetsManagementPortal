@@ -1,17 +1,19 @@
 ﻿using AssetsManagement.Configuration;
+using AssetsManagement.Infrastructure.Data;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Npgsql;
+using System.Data;
 
 namespace AssetsManagement.Infrastructure.Repositories
 {
     public abstract class BaseRepository
     {
-        protected string ConnectionString;
+        private readonly AppDbContext _dbContext;
 
-        protected BaseRepository(IOptions<DatabaseConfiguration> configuration)
+        public BaseRepository(AppDbContext dbContext)
         {
-            ConnectionString = configuration.Value.DefaultConnection;
+            _dbContext = dbContext;
         }
 
         public async Task<List<T>> GetAll<T>(string tableName)
@@ -67,14 +69,14 @@ namespace AssetsManagement.Infrastructure.Repositories
             await ExecuteAsync($"DELETE FROM {tableName}");
         }
 
-        protected async Task<T> WithConnection<T>(Func<NpgsqlConnection, Task<T>> getData)
+        protected async Task<T> WithConnection<T>(Func<IDbConnection, Task<T>> getData)
         {
             try
             {
-                await using var connection = new NpgsqlConnection(ConnectionString);
-                await connection.OpenAsync();
+                using IDbConnection connection = _dbContext.CreateNewConnection();
+                connection.Open();
                 var result = await getData(connection);
-                await connection.CloseAsync();
+                connection.Close();
                 return result;
             }
             catch (TimeoutException ex)
@@ -87,14 +89,14 @@ namespace AssetsManagement.Infrastructure.Repositories
             }
         }
 
-        protected async Task WithConnection(Func<NpgsqlConnection, Task> action)
+        protected async Task WithConnection(Func<IDbConnection, Task> action)
         {
             try
             {
-                await using var connection = new NpgsqlConnection(ConnectionString);
-                await connection.OpenAsync();
+                using IDbConnection connection = _dbContext.CreateNewConnection();
+                connection.Open();
                 await action(connection);
-                await connection.CloseAsync();
+                connection.Close();
             }
             catch (TimeoutException ex)
             {
