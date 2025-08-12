@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AssetsManagement.Configuration;
+using AssetsManagement.Infrastructure.Data;
+using AssetsManagement.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -132,6 +136,7 @@ while (true)
             Console.WriteLine("Client inserted.");
             break;
 
+
         case "5":
             var clients = await clientsRepo.GetAllClients();
             foreach (var c in clients)
@@ -146,6 +151,47 @@ while (true)
             await assetsRepo.InsertAsset(new Assets { Name = aname!, CategoryId = catId });
             Console.WriteLine("Asset inserted.");
             break;
+            builder.Services.AddScoped<UsersRepository>();
+            // Add services to the container.
+            builder.Services.AddRazorPages();
+            builder.Services.AddSingleton<Db>();
+
+            builder.Services.Configure<DatabaseConfiguration>(builder.Configuration.GetSection("ConnectionStrings"));
+
+            // Add EF Core with SQL Server
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register AppDbContext as singleton
+            //builder.Services.AddSingleton<AppDbContext>();
+
+            // Add Identity services
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 5; //change this in production
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
+
+            builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AuthorizeFolder("/"); // Require authentication for all pages by default 
+                options.Conventions.AllowAnonymousToPage("/Index"); //Make Home page public
+                options.Conventions.AllowAnonymousToPage("/Privacy");
+                options.Conventions.AllowAnonymousToFolder("/Public"); //Make all pages in /Public folder accessible without login
+                //you can also add the attribute [AllowAnonymous] to specific pages to make them public
+
+            }).AddMvcOptions(options => { });
+
+            var app = builder.Build();
 
         case "7":
             var assets = await assetsRepo.GetAllAssets();
@@ -174,12 +220,16 @@ while (true)
                 Console.WriteLine($"AssetId: {ca.AssetId}, Value: {ca.Value}, Date: {ca.AssetDate:yyyy-MM-dd}");
             break;
 
+
         case "10":
             Console.Write("Manager name: ");
             var mname = Console.ReadLine();
             await accountManagersRepo.InsertAccountManager(new AccountManagers { Name = mname! });
             Console.WriteLine("Account manager inserted.");
             break;
+
+            app.UseAuthentication();
+
 
         case "11":
             var managers = await accountManagersRepo.GetAllAccountManagers();
